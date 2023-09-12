@@ -14,6 +14,7 @@
 
 local capabilities = require "st.capabilities"
 local log = require "log"
+local stDevice = require "st.device"
 local socket = require "cosock.socket"
 local zcl_clusters = require "st.zigbee.zcl.clusters"
 
@@ -49,19 +50,38 @@ local function scenes_cluster_handler(driver, device, zb_rx)
   end
 end
 
-local function added_handler(self, device)
-  for _, component in pairs(device.profile.components) do
-    device:emit_component_event(component,
-      capabilities.button.supportedButtonValues({ "pushed" }, { visibility = { displayed = false } }))
-    if component.id == "main" then
-      device:emit_component_event(component,
-        capabilities.button.numberOfButtons({ value = 30 }, { visibility = { displayed = false } }))
-    else
-      device:emit_component_event(component,
-        capabilities.button.numberOfButtons({ value = 1 }, { visibility = { displayed = false } }))
+local function find_child(parent, ep_id)
+  return parent:get_child_by_parent_assigned_key(string.format("%02X", ep_id))
+end
+
+local function create_child_devices(driver, device)
+  local base_name = device.label:sub(1, device.label:find(" "))
+  for i = 2, 30, 1 do
+    if find_child(device, i) == nil then
+      local metadata = {
+        type = "EDGE_CHILD",
+        parent_assigned_child_key = string.format("%02X", i),
+        label = base_name .. i,
+        profile = "one-button",
+        parent_device_id = device.id,
+        vendor_provided_label = base_name .. i,
+      }
+      driver:try_create_device(metadata)
     end
-    -- Without this time delay, the state of some buttons cannot be updated
-    socket.sleep(1)
+    -- Add timeout to avoid missing create devices
+    socket.sleep(2)
+  end
+  device:refresh()
+end
+
+local function added_handler(driver, device)
+  if device.network_type ~= stDevice.NETWORK_TYPE_CHILD then
+    create_child_devices(driver, device)
+  end
+  -- Set Button Capabilities for scene switches
+  if device:supports_capability_by_id(capabilities.button.ID) then
+    device:emit_event(capabilities.button.numberOfButtons({ value = 1 }, { visibility = { displayed = false } }))
+    device:emit_event(capabilities.button.supportedButtonValues({ "pushed" }, {visibility = {displayed = false } }))
   end
 end
 
