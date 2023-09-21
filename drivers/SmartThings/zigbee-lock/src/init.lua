@@ -342,7 +342,8 @@ local zigbee_lock_driver = {
     require("samsungsds"),
     require("yale"),
     require("yale-fingerprint-lock"),
-    require("lock-without-codes")
+    require("lock-without-codes"),
+    require("aqara")
   },
   lifecycle_handlers = {
     doConfigure = do_configure,

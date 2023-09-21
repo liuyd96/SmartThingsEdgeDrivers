@@ -124,6 +124,12 @@ zigbeeManufacturer:
     manufacturer:
     model: E261-KR0B0Z0-HA
     deviceProfileName: lock-battery
+  # Aqara
+  - id: "Aqara/akr011"
+    deviceLabel: "Aqara Door Lock"
+    manufacturer: Lumi
+    model: aqara.lock.akr011
+    deviceProfileName: base-lock
 zigbeeGeneric:
   - id: "genericLock"
     deviceLabel: Zigbee Lock
