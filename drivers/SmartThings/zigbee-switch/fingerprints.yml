@@ -2137,15 +2137,15 @@ zigbeeManufacturer:
     deviceProfileName: light-level-power-energy
   # Wall Hero
   - id: "WALL HERO/ACL-401S4I"
-    deviceLabel: 四位智能开关面板 1 
+    deviceLabel: 四位智能开关面板 1
     manufacturer: WALL HERO
     model: ACL-401S4I
     deviceProfileName: basic-switch
   - id: "WALL HERO/ACL-401S8I"
-    deviceLabel: 八位智能开关/场景面板 1 
+    deviceLabel: 八位智能开关/场景面板 1
     manufacturer: WALL HERO
     model: ACL-401S8I
-    deviceProfileName: basic-switch
+    deviceProfileName: wallhero-switch
   - id: "Insta GmbH/Switching Actuator"
     deviceLabel: NEXENTRO Switching Actuator
     manufacturer: Insta GmbH
