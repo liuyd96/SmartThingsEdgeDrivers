@@ -64,6 +64,14 @@ local function stringToOctetString(str)
   return octetString
 end
 
+local function stringToHex(str)
+  local hexFormat = ""
+  for i = 1, # str do
+    local byte = string.byte(str, i)
+    hexFormat = hexFormat .. string.format("%02x", byte)
+  end
+  return hexFormat
+end
 
 local function my_secret_data_handler(secret_info)
   log.debug("This is my_secret_data_handler: 11111111111111111111111111111111")
@@ -87,11 +95,12 @@ local function aqara_specific_attr_handler(driver, device, value, zb_rx)
 
   local encrypted_pub_key = string.sub(value.value, 2, 65)
   log.debug("OctestString of value is: " .. value.value)
-  log.debug("value is: " .. stringToOctetString(value.value))
+  log.debug("value is: " .. stringToHex(value.value))
+  log.debug("Length of encrypted_pub_key is: " .. #encrypted_pub_key)
+  log.debug("Hex format of encrypted_pub_key is: " .. stringToHex(encrypted_pub_key))
   log.debug("encrypted_pub_key is: " .. encrypted_pub_key)
-  log.debug("OctestString of encrypted_pub_key is: " .. stringToOctetString(encrypted_pub_key))
 
-  local res, err = security.get_aqara_secret(device.zigbee_eui, encrypted_pub_key, device:get_manufacturer(), device:get_model(), "setup_id", "product_id")
+  local res, err = security.get_aqara_secret(stringToHex(device.zigbee_eui), encrypted_pub_key, "AqaraDoorlock K100", "0AE0", "006", "337dbf83-af55-449c-824b-54ffcbb3afb6")
   if res then
     log.error("Wrong !!!!!!!!!!!!!!!!!!!!")
   end
