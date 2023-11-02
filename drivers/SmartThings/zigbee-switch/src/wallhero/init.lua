@@ -55,7 +55,7 @@ local function create_child_devices(driver, device)
         type = "EDGE_CHILD",
         parent_assigned_child_key = string.format("%02X", i),
         label = base_name .. i,
-        profile = "basic-switch",
+        profile = "wallhero-switch",
         parent_device_id = device.id,
         vendor_provided_label = base_name .. i,
       }
