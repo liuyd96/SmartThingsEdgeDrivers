@@ -88,6 +88,11 @@ end
 
 local function init(driver, device)
   security.register_aqara_secret_handler(driver, my_secret_data_handler)
+    -- Send Encrypted Cloud Public Key to Lock
+  local data = "\x3E" .. stringToOctetString(MY_DS.cloud_public_key)
+  log.debug("MY_DS.cloud_public_key cmd is " .. data)
+  device:send(cluster_base.write_manufacturer_specific_attribute(device, PRIVATE_CLUSTER_ID, PRIVATE_ATTRIBUTE_ID, MFG_CODE,
+    data_types.OctetString, data))
 end
 
 local function aqara_specific_attr_handler(driver, device, value, zb_rx)
@@ -116,7 +121,6 @@ local function unlock_cmd_handler(driver, device, command)
     PRIVATE_ATTRIBUTE_ID, MFG_CODE, data_types.OctetString.ID, decrypted_payload)
   device:send(message)
 end
-
 
 local function lock_cmd_handler(driver, device, command)
   log.debug("Read MY_DS.shared_key in lock_cmd_handler: " .. MY_DS.shared_key)
