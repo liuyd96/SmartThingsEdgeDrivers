@@ -66,7 +66,7 @@ end
 
 local function stringToHex(str)
   local hexFormat = ""
-  for i = 1, # str do
+  for i = 1, #str do
     local byte = string.byte(str, i)
     hexFormat = hexFormat .. string.format("%02x", byte)
   end
@@ -78,12 +78,12 @@ local function my_secret_data_handler(secret_info)
   log.debug(dump(secret_info))
   MY_DS.cloud_public_key = secret_info.cloud_public_key
   MY_DS.shared_key = secret_info.shared_key
-  if secret_info.secret_type == "aqara" then
-    log.debug("cloud_public_key is " .. secret_info.cloud_public_key)
-    log.debug("shared_key is " .. secret_info.shared_key)
-    log.debug("MY_DS.cloud_public_key is " .. MY_DS.cloud_public_key)
-    log.debug("MY_DS.shared_key is " .. MY_DS.shared_key)
-  end
+  -- if secret_info.secret_type == "aqara" then
+  --   log.debug("cloud_public_key is " .. secret_info.cloud_public_key)
+  --   log.debug("shared_key is " .. secret_info.shared_key)
+  --   log.debug("MY_DS.cloud_public_key is " .. MY_DS.cloud_public_key)
+  --   log.debug("MY_DS.shared_key is " .. MY_DS.shared_key)
+  -- end
 end
 
 local function init(driver, device)
