@@ -36,7 +36,8 @@ local FINGERPRINTS = {
 local function can_handle_wallhero_switch(opts, driver, device, ...)
   for _, fingerprint in ipairs(FINGERPRINTS) do
     if device:get_manufacturer() == fingerprint.mfr and device:get_model() == fingerprint.model then
-      return true
+      local subdriver = require("wallhero")
+      return true, subdriver
     end
   end
   return false
@@ -102,7 +103,7 @@ end
 local function device_info_changed(driver, device, event, args)
   local preferences = device.preferences
   local old_preferences = args.old_st_store.preferences
-  local value_map = { [true] = 0x01,[false] = 0x00 }
+  local value_map = { [true] = 0x00,[false] = 0x01 }
   if preferences ~= nil then
     local id = "stse.turnOffIndicatorLight"
     local old_value = old_preferences[id]
