@@ -1,0 +1,6 @@
+zigbeeManufacturer:
+  - id: "SHUS/shus.smart.mattress"
+    deviceLabel: Shus Smart Mattress
+    manufacturer: SHUS
+    model: shus.smart.mattress
+    deviceProfileName: shus-smart-mattress

@@ -1,0 +1,31 @@
+name: shus-smart-mattress
+metadata:
+  mnmn: SolutionsEngineering
+  vid: 8da96244-a7e3-38fb-8a5a-15758900c435
+components:
+  - id: main
+    capabilities:
+      - id: firmwareUpdate
+        ephemeral: false
+      - id: refresh
+        ephemeral: false
+      - id: absolutegreen57841.aiMode
+        version: 1
+        ephemeral: false
+      - id: absolutegreen57841.autoInflation
+        version: 1
+        ephemeral: false
+      - id: absolutegreen57841.strongExpMode
+        version: 1
+        ephemeral: false
+      - id: absolutegreen57841.leftControl
+        version: 1
+        ephemeral: false
+      - id: absolutegreen57841.rightControl
+        version: 1
+        ephemeral: false
+      - id: absolutegreen57841.yoga
+        version: 1
+        ephemeral: false
+    # categories:
+    #   - name: Bed

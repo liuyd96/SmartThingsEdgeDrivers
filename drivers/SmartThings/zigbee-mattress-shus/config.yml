@@ -1,0 +1,6 @@
+name: 'Zibgee Mattress'
+packageKey: 'zibgee-mattress'
+permissions:
+  zigbee: {}
+description: "SmartThings driver for Zigbee Mattress devices"
+vendorSupportInformation: "https://support.smartthings.com"
