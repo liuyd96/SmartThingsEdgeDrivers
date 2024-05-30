@@ -15,12 +15,12 @@
 local capabilities = require "st.capabilities"
 
 local custom_capabilities = {
-    ai_mode = capabilities["absolutegreen57841.aiMode"],
-    auto_inflation = capabilities["absolutegreen57841.autoInflation"],
-    strong_exp_mode = capabilities["absolutegreen57841.strongExpMode"],
-    left_control = capabilities["absolutegreen57841.leftControl"],
-    right_control = capabilities["absolutegreen57841.rightControl"],
-    yoga = capabilities["absolutegreen57841.yoga"]
+    ai_mode = capabilities["amberwonder26407.aiMode"],
+    auto_inflation = capabilities["amberwonder26407.autoInflation"],
+    strong_exp_mode = capabilities["amberwonder26407.strongExpMode"],
+    left_control = capabilities["amberwonder26407.leftControl"],
+    right_control = capabilities["amberwonder26407.rightControl"],
+    yoga = capabilities["amberwonder26407.yoga"]
 }
 
 return custom_capabilities
