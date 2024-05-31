@@ -16,6 +16,9 @@ local capabilities = require "st.capabilities"
 local cluster_base = require "st.zigbee.cluster_base"
 local custom_clusters = require "shus/custom_clusters"
 local custom_capabilities = require "shus/custom_capabilities"
+local log = require "log"
+local socket = require "cosock.socket"
+
 
 local FINGERPRINTS = {
   { mfr = "SHUS", model = "shus.smart.mattress" }
@@ -26,9 +29,9 @@ local FINGERPRINTS = {
 -- #############################
 
 local function process_switch_attr(device, value, cmd)
-  if value.value == 0 then
+  if value.value == false then
     device:emit_event(cmd.off())
-  elseif value.value == 1 then
+  elseif value.value == true then
     device:emit_event(cmd.on())
   end
 end
@@ -111,41 +114,35 @@ local function send_read_attr_request(device, cluster, attr)
 end
 
 local function do_refresh(driver, device)
-  device.thread:call_with_delay(1,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_ai_mode)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_ai_mode)
-    end
-  )
-  device.thread:call_with_delay(2,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.auto_inflation)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.strong_exp_mode)
-    end
-  )
-  device.thread:call_with_delay(3,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_back)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_waist)
-    end
-  )
-  device.thread:call_with_delay(4,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_hip)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_back)
-    end
-  )
-  device.thread:call_with_delay(5,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_waist)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_hip)
-    end
-  )
-  device.thread:call_with_delay(6,
-    function(t)
-      send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.yoga)
-    end
-  )
+  log.error("Enter refresh !!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_ai_mode)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_ai_mode)
+
+  socket.sleep(1.5)
+
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.auto_inflation)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.strong_exp_mode)
+
+  log.error("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+  socket.sleep(1.5)
+  log.error("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
+
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_back)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_waist)
+
+  socket.sleep(1.5)
+
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.left_hip)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_back)
+
+  socket.sleep(1.5)
+
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_waist)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.right_hip)
+
+  socket.sleep(1.5)
+  send_read_attr_request(device, custom_clusters.shus_smart_mattress, custom_clusters.shus_smart_mattress.attributes.yoga)
 end
 
 local function process_switch_cap(device, value, cluster, attr)
@@ -355,24 +352,16 @@ end
 
 local function device_init(driver, device)
   -- TODO
+  log.error("---------------------------- Enter Init------------------------")
 end
 
 local function device_added(driver, device)
-  left_ai_mode_cap_handler(driver, device, { args = { leftControl = "off" } })
-  right_ai_mode_cap_handler(driver, device, { args = { rightControl = "off" } })
-  auto_inflation_cap_handler(driver, device, { args = { stateControl = "off" } })
-  strong_exp_mode_cap_handler(driver, device, { args = { stateControl = "off" } })
-  left_control_back_cap_handler(driver, device, { args = { backControl = "soft" } })
-  left_control_waist_cap_handler(driver, device, { args = { waistControl = "soft" } })
-  left_control_hip_cap_handler(driver, device, { args = { hipControl = "soft" } })
-  right_control_back_cap_handler(driver, device, { args = { backControl = "soft" } })
-  right_control_waist_cap_handler(driver, device, { args = { waistControl = "soft" } })
-  right_control_hip_cap_handler(driver, device, { args = { hipControl = "soft" } })
-  yoga_cap_handler(driver, device, { args = { stateControl = "stop" } })
+  do_refresh(driver, device)
 end
 
 local function do_configure(driver, device)
   -- TODO
+  log.error("@@@@@@@@@@@@@@@@@@@@@@@@@@ Enter do_configure @@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 end
 
 local function is_shus_products(opts, driver, device)
